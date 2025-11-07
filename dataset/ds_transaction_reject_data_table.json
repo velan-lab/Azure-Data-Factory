@@ -1,0 +1,79 @@
+{
+	"name": "ds_transaction_reject_data_table",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_Azure_Sql_Db",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "TRANS_ID",
+				"type": "varchar"
+			},
+			{
+				"name": "TRANS_DATE",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "PROD_ID",
+				"type": "varchar"
+			},
+			{
+				"name": "CUST_ID",
+				"type": "varchar"
+			},
+			{
+				"name": "CARD_TYPE",
+				"type": "varchar"
+			},
+			{
+				"name": "CARD_NUMBER",
+				"type": "varchar"
+			},
+			{
+				"name": "CARD_LOYALTY",
+				"type": "varchar"
+			},
+			{
+				"name": "COST",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 2
+			},
+			{
+				"name": "QUANTITY",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "PRICE",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 2
+			},
+			{
+				"name": "FILE_NAME",
+				"type": "varchar"
+			},
+			{
+				"name": "REJECT_REASON",
+				"type": "varchar"
+			},
+			{
+				"name": "LOAD_DATE",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "Sales",
+			"table": "REJECTED_TRANSACTIONS_DATA"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

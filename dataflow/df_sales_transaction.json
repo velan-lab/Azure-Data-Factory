@@ -1,0 +1,165 @@
+{
+	"name": "df_sales_transaction",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_Fact_Sales_1",
+						"type": "DatasetReference"
+					},
+					"name": "FILE",
+					"description": "Import data from Source File"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_sales_transactions_table",
+						"type": "DatasetReference"
+					},
+					"name": "TARGET",
+					"rejectedDataLinkedService": {
+						"referenceName": "ls_ablob_velansa",
+						"type": "LinkedServiceReference"
+					}
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_transaction_reject_data_table",
+						"type": "DatasetReference"
+					},
+					"name": "REJECT"
+				}
+			],
+			"transformations": [
+				{
+					"name": "CLEANSING",
+					"description": "Data cleansing as per business requirement."
+				},
+				{
+					"name": "VALIDATION"
+				},
+				{
+					"name": "derivedColumn2"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          transaction_id as short,",
+				"          transactional_date as string,",
+				"          product_id as string,",
+				"          customer_id as short,",
+				"          payment as string,",
+				"          credit_card as long,",
+				"          loyalty_card as boolean,",
+				"          cost as double,",
+				"          quantity as short,",
+				"          price as double",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     limit: 1000,",
+				"     ignoreNoFilesFound: false,",
+				"     rowUrlColumn: 'FILE_NAME',",
+				"     partitionBy('hash', 1)) ~> FILE",
+				"FILE derive(transactional_date = substring(transactional_date,1,10)) ~> CLEANSING",
+				"CLEANSING split(credit_card != 0 && customer_id != 0 && payment !='',",
+				"     credit_card == 0 || customer_id == 0 || payment =='',",
+				"     disjoint: true) ~> VALIDATION@(TARGET, REJECT)",
+				"VALIDATION@REJECT derive(REJECT_REASON = replace(\r",
+				"    replace(\r",
+				"        replace(\r",
+				"            concatWS(\r",
+				"                '|',\r",
+				"                iif(credit_card == 0, 'Invalid credit card', ''),\r",
+				"                iif(isNull(payment) || payment == '', 'Invalid payment mode', ''),\r",
+				"                iif(customer_id == 0, 'Invalid customer id', '')\r",
+				"            ),\r",
+				"        '||', '|'),\r",
+				"    '| ', ''),\r",
+				"'|', ''),",
+				"          LOAD_DATE = currentTimestamp()) ~> derivedColumn2",
+				"VALIDATION@TARGET sink(allowSchemaDrift: false,",
+				"     validateSchema: true,",
+				"     input(",
+				"          TRANS_ID as long,",
+				"          TRANS_DATE as timestamp,",
+				"          PROD_ID as integer,",
+				"          CUST_ID as integer,",
+				"          CARD_TYPE as string,",
+				"          CARD_NUMBER as string,",
+				"          CARD_LOYALTY as string,",
+				"          COST as decimal(10,2),",
+				"          QUANTITY as integer,",
+				"          PRICE as decimal(10,2),",
+				"          FILE_NAME as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     dateFormat:'yyyy-MM-dd',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     saveOrder: 0,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          TRANS_ID = transaction_id,",
+				"          TRANS_DATE = transactional_date,",
+				"          PROD_ID = product_id,",
+				"          CUST_ID = customer_id,",
+				"          CARD_TYPE = payment,",
+				"          CARD_NUMBER = credit_card,",
+				"          CARD_LOYALTY = loyalty_card,",
+				"          COST = cost,",
+				"          QUANTITY = quantity,",
+				"          PRICE = price,",
+				"          FILE_NAME",
+				"     )) ~> TARGET",
+				"derivedColumn2 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          TRANS_ID as string,",
+				"          TRANS_DATE as timestamp,",
+				"          PROD_ID as string,",
+				"          CUST_ID as string,",
+				"          CARD_TYPE as string,",
+				"          CARD_NUMBER as string,",
+				"          CARD_LOYALTY as string,",
+				"          COST as decimal(18,2),",
+				"          QUANTITY as integer,",
+				"          PRICE as decimal(18,2),",
+				"          FILE_NAME as string,",
+				"          REJECT_REASON as string,",
+				"          LOAD_DATE as timestamp",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          TRANS_ID = transaction_id,",
+				"          TRANS_DATE = transactional_date,",
+				"          PROD_ID = product_id,",
+				"          CUST_ID = customer_id,",
+				"          CARD_TYPE = payment,",
+				"          CARD_NUMBER = credit_card,",
+				"          CARD_LOYALTY = loyalty_card,",
+				"          COST = cost,",
+				"          QUANTITY = quantity,",
+				"          PRICE = price,",
+				"          FILE_NAME,",
+				"          REJECT_REASON,",
+				"          LOAD_DATE",
+				"     )) ~> REJECT"
+			]
+		}
+	}
+}

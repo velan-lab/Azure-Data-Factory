@@ -1,0 +1,226 @@
+{
+	"name": "pl_file_to_file",
+	"properties": {
+		"activities": [
+			{
+				"name": "COPY",
+				"description": "This activity copies data from source to target.",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [
+					{
+						"name": "Source",
+						"value": "source/csvfiles/Fact_Sales_1.csv"
+					},
+					{
+						"name": "Destination",
+						"value": "target/csvfiles/Fact_Sales_1_cleansed.csv"
+					},
+					null
+				],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"additionalColumns": [
+							{
+								"name": "FILE_NAME",
+								"value": "$$FILENAME"
+							}
+						],
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": false,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings",
+							"copyBehavior": "FlattenHierarchy"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"logSettings": {
+						"enableCopyActivityLog": true,
+						"copyActivityLogSettings": {
+							"logLevel": "Info",
+							"enableReliableLogging": false
+						},
+						"logLocationSettings": {
+							"linkedServiceName": {
+								"referenceName": "ls_ablob_velansa",
+								"type": "LinkedServiceReference"
+							},
+							"path": "logs"
+						}
+					},
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "transaction_id",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "TRANS_ID",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "transactional_date",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "TRANS_DATE",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "product_id",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PROD_ID",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "customer_id",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "CUST_ID",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "payment",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "CARD_TYPE",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "credit_card",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "CARD_NUMBER",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "loyalty_card",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "CARD_LOYALTY",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "cost",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "COST",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "quantity",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "QUANTITY",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "price",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PRICE",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "FILE_NAME",
+									"type": "String"
+								},
+								"sink": {
+									"name": "FILE_NAME",
+									"type": "String",
+									"physicalType": "String"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_Fact_Sales_1",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ds_Fact_Sales_1_cleansed",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "Test"
+		},
+		"annotations": [],
+		"lastPublishTime": "2025-11-06T14:09:23Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

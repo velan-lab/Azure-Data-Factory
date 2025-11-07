@@ -1,0 +1,9 @@
+{
+	"name": "velan-bootcamp-adf",
+	"location": "centralindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "0ac00903-b4a9-4e75-b667-965bbef51d93",
+		"tenantId": "e4b17ab4-6081-459e-a667-4c8ef9cb5271"
+	}
+}

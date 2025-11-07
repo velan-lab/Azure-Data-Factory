@@ -1,0 +1,72 @@
+{
+	"name": "ds_sales_transactions_table",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_Azure_Sql_Db",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "TRANS_ID",
+				"type": "bigint",
+				"precision": 19
+			},
+			{
+				"name": "TRANS_DATE",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "PROD_ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "CUST_ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "CARD_TYPE",
+				"type": "varchar"
+			},
+			{
+				"name": "CARD_NUMBER",
+				"type": "varchar"
+			},
+			{
+				"name": "CARD_LOYALTY",
+				"type": "varchar"
+			},
+			{
+				"name": "COST",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 2
+			},
+			{
+				"name": "QUANTITY",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "PRICE",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 2
+			},
+			{
+				"name": "FILE_NAME",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "Sales",
+			"table": "Transactions"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

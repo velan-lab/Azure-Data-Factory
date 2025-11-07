@@ -1,0 +1,25 @@
+{
+	"name": "ds_Fact_Sales_1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_ablob_velansa",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "Fact_Sales_1.csv",
+				"folderPath": "csvfiles",
+				"container": "source"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

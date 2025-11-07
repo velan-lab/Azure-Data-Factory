@@ -1,0 +1,38 @@
+{
+	"name": "pl_file_to_table",
+	"properties": {
+		"activities": [
+			{
+				"name": "df_file_to_table",
+				"description": "The dataflow which consume the data from csv file to Azure SQL table with transformations.",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "df_sales_transaction",
+						"type": "DataFlowReference"
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			}
+		],
+		"folder": {
+			"name": "Test"
+		},
+		"annotations": [],
+		"lastPublishTime": "2025-11-06T14:09:23Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
