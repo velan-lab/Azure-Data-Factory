@@ -1,0 +1,61 @@
+{
+	"name": "df_filter_sort_aggregate",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_Fact_Sales_1",
+						"type": "DatasetReference"
+					},
+					"name": "SOURCE"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "TRANSFORM",
+					"description": "Transforming logics has been applied."
+				},
+				{
+					"name": "FILTER"
+				},
+				{
+					"name": "AGG"
+				},
+				{
+					"name": "SORT"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          transaction_id as short,",
+				"          transactional_date as timestamp,",
+				"          product_id as string,",
+				"          customer_id as short,",
+				"          payment as string,",
+				"          credit_card as long,",
+				"          loyalty_card as boolean,",
+				"          cost as double,",
+				"          quantity as short,",
+				"          price as double",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> SOURCE",
+				"SOURCE derive(transactional_date = toDate(transactional_date)\r",
+				"\r",
+				",",
+				"          ETL_LOAD_DATE = currentDate(),",
+				"          PROFIT = price - cost) ~> TRANSFORM",
+				"TRANSFORM filter(toInteger(right(product_id, 3)) > 400 && toInteger(right(product_id, 3)) < 500",
+				"",
+				") ~> FILTER",
+				"FILTER aggregate(groupBy(transactional_date),",
+				"     PROFIT = sum(PROFIT)) ~> AGG",
+				"AGG sort(asc(transactional_date, true)) ~> SORT"
+			]
+		}
+	}
+}
