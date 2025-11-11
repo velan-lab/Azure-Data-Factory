@@ -19,17 +19,39 @@
 					"name": "ACCOUNT"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_cust_acct_tgt",
+						"type": "DatasetReference"
+					},
+					"name": "LoanAnalysis",
+					"rejectedDataLinkedService": {
+						"referenceName": "ls_ablob_velansa",
+						"type": "LinkedServiceReference"
+					}
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_cust_acct_reject",
+						"type": "DatasetReference"
+					},
+					"name": "LoanReject"
+				}
+			],
 			"transformations": [
 				{
 					"name": "JOIN"
+				},
+				{
+					"name": "SPLIT"
 				}
 			],
 			"scriptLines": [
 				"source(output(",
 				"          CUST_ID as integer,",
 				"          CUST_NAME as string,",
-				"          AGE as string,",
+				"          AGE as integer,",
 				"          GENDER as string,",
 				"          CITY as string",
 				"     ),",
@@ -51,7 +73,17 @@
 				"     joinType:'inner',",
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
-				"     broadcast: 'auto')~> JOIN"
+				"     broadcast: 'auto')~> JOIN",
+				"JOIN split(AGE >= 25 && AGE <= 45,",
+				"     disjoint: false) ~> SPLIT@(toTgt, toReject)",
+				"SPLIT@toTgt sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> LoanAnalysis",
+				"SPLIT@toReject sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> LoanReject"
 			]
 		}
 	}

@@ -1,0 +1,24 @@
+{
+	"name": "ds_cust_acct_tgt",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_ablob_velansa",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "cust_acct_tgt",
+				"folderPath": "csvfiles",
+				"container": "target"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
