@@ -5,10 +5,6 @@
 		"typeProperties": {
 			"sources": [
 				{
-					"dataset": {
-						"referenceName": "ds_Fact_Sales_1",
-						"type": "DatasetReference"
-					},
 					"name": "SOURCE"
 				}
 			],
@@ -42,16 +38,11 @@
 				"          price as double",
 				"     ),",
 				"     allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> SOURCE",
-				"SOURCE derive(transactional_date = toDate(transactional_date)\r",
-				"\r",
-				",",
+				"     validateSchema: false) ~> SOURCE",
+				"SOURCE derive(transactional_date = toDate(transactional_date),",
 				"          ETL_LOAD_DATE = currentDate(),",
 				"          PROFIT = price - cost) ~> TRANSFORM",
-				"TRANSFORM filter(toInteger(right(product_id, 3)) > 400 && toInteger(right(product_id, 3)) < 500",
-				"",
-				") ~> FILTER",
+				"TRANSFORM filter(toInteger(right(product_id, 3)) > 400 && toInteger(right(product_id, 3)) < 500) ~> FILTER",
 				"FILTER aggregate(groupBy(transactional_date),",
 				"     PROFIT = sum(PROFIT)) ~> AGG",
 				"AGG sort(asc(transactional_date, true)) ~> SORT"

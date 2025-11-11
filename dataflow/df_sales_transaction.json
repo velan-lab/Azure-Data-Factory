@@ -5,10 +5,6 @@
 		"typeProperties": {
 			"sources": [
 				{
-					"dataset": {
-						"referenceName": "ds_Fact_Sales_1",
-						"type": "DatasetReference"
-					},
 					"name": "FILE",
 					"description": "Import data from Source File"
 				}
@@ -61,7 +57,6 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     limit: 1000,",
-				"     ignoreNoFilesFound: false,",
 				"     rowUrlColumn: 'FILE_NAME',",
 				"     partitionBy('hash', 1)) ~> FILE",
 				"FILE derive(transactional_date = substring(transactional_date,1,10)) ~> CLEANSING",

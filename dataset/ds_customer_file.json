@@ -1,0 +1,45 @@
+{
+	"name": "ds_customer_file",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_ablob_velansa",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "customer_data_20251110.csv",
+				"folderPath": "csvfiles",
+				"container": "source"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": ""
+		},
+		"schema": [
+			{
+				"name": "CUST_ID",
+				"type": "String"
+			},
+			{
+				"name": "CUST_NAME",
+				"type": "String"
+			},
+			{
+				"name": "AGE",
+				"type": "String"
+			},
+			{
+				"name": "GENDER",
+				"type": "String"
+			},
+			{
+				"name": "CITY",
+				"type": "String"
+			}
+		]
+	}
+}

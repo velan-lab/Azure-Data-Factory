@@ -26,10 +26,6 @@
 							"type": "JsonReadSettings"
 						}
 					},
-					"dataset": {
-						"referenceName": "ds_ecdc_file_list",
-						"type": "DatasetReference"
-					},
 					"firstRowOnly": false
 				}
 			},
@@ -86,44 +82,8 @@
 										"fileExtension": ".txt"
 									}
 								},
-								"enableStaging": false,
-								"translator": {
-									"type": "TabularTranslator",
-									"typeConversion": true,
-									"typeConversionSettings": {
-										"allowDataTruncation": true,
-										"treatBooleanAsNumber": false
-									}
-								}
-							},
-							"inputs": [
-								{
-									"referenceName": "ds_cases_deaths_raw_csv_http",
-									"type": "DatasetReference",
-									"parameters": {
-										"relativeURL": {
-											"value": "@item().sourceRelativeURL",
-											"type": "Expression"
-										},
-										"baseURL": {
-											"value": "@item().sourceBaseURL",
-											"type": "Expression"
-										}
-									}
-								}
-							],
-							"outputs": [
-								{
-									"referenceName": "ds_cases_deaths_raw_csv_dl",
-									"type": "DatasetReference",
-									"parameters": {
-										"filename": {
-											"value": "@item().sinkFileName",
-											"type": "Expression"
-										}
-									}
-								}
-							]
+								"enableStaging": false
+							}
 						}
 					]
 				}
