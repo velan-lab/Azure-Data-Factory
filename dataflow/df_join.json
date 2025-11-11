@@ -78,12 +78,16 @@
 				"     disjoint: false) ~> SPLIT@(toTgt, toReject)",
 				"SPLIT@toTgt sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     partitionFileNames:['cust_acct_tgt.csv'],",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> LoanAnalysis",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> LoanAnalysis",
 				"SPLIT@toReject sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     partitionFileNames:['cust_acct_reject.csv'],",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> LoanReject"
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> LoanReject"
 			]
 		}
 	}

@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "cust_acct_tgt",
+				"fileName": "cust_acct_tgt.csv",
 				"folderPath": "csvfiles",
 				"container": "target"
 			},
