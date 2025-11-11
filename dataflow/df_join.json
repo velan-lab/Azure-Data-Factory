@@ -5,14 +5,53 @@
 		"typeProperties": {
 			"sources": [
 				{
-					"name": "source1"
+					"dataset": {
+						"referenceName": "ds_customer_file",
+						"type": "DatasetReference"
+					},
+					"name": "CUSTOMER"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_account_file",
+						"type": "DatasetReference"
+					},
+					"name": "ACCOUNT"
 				}
 			],
 			"sinks": [],
-			"transformations": [],
+			"transformations": [
+				{
+					"name": "JOIN"
+				}
+			],
 			"scriptLines": [
-				"source(allowSchemaDrift: true,",
-				"     validateSchema: false) ~> source1"
+				"source(output(",
+				"          CUST_ID as integer,",
+				"          CUST_NAME as string,",
+				"          AGE as string,",
+				"          GENDER as string,",
+				"          CITY as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> CUSTOMER",
+				"source(output(",
+				"          CUST_ID as integer,",
+				"          ACCOUNT_NUMBER as string,",
+				"          ACCOUNT_TYPE as string,",
+				"          ACCOUNT_OPEN_DATE as string,",
+				"          ACCOUNT_CLOSE_DATE as string,",
+				"          DORMANCY_STATUS as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> ACCOUNT",
+				"CUSTOMER, ACCOUNT join(CUSTOMER@CUST_ID == ACCOUNT@CUST_ID,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> JOIN"
 			]
 		}
 	}

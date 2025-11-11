@@ -19,6 +19,31 @@
 			"firstRowAsHeader": true,
 			"quoteChar": ""
 		},
-		"schema": []
+		"schema": [
+			{
+				"name": "CUST_ID",
+				"type": "String"
+			},
+			{
+				"name": "ACCOUNT_NUMBER",
+				"type": "String"
+			},
+			{
+				"name": "ACCOUNT_TYPE",
+				"type": "String"
+			},
+			{
+				"name": "ACCOUNT_OPEN_DATE",
+				"type": "String"
+			},
+			{
+				"name": "ACCOUNT_CLOSE_DATE",
+				"type": "String"
+			},
+			{
+				"name": "DORMANCY_STATUS",
+				"type": "String"
+			}
+		]
 	}
 }
