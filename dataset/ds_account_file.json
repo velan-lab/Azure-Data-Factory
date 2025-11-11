@@ -1,0 +1,24 @@
+{
+	"name": "ds_account_file",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_ablob_velansa",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "account_data_20251110.csv",
+				"folderPath": "csvfiles",
+				"container": "source"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": ""
+		},
+		"schema": []
+	}
+}

@@ -1,13 +1,18 @@
 {
-	"name": "dataflow1",
+	"name": "df_join",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
-			"sources": [],
+			"sources": [
+				{
+					"name": "source1"
+				}
+			],
 			"sinks": [],
 			"transformations": [],
 			"scriptLines": [
-				""
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false) ~> source1"
 			]
 		}
 	}
