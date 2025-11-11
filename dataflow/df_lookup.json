@@ -1,0 +1,57 @@
+{
+	"name": "df_lookup",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_customer_file",
+						"type": "DatasetReference"
+					},
+					"name": "CUSTOMER"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_account_file",
+						"type": "DatasetReference"
+					},
+					"name": "ACCOUNT"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "lookup1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          CUST_ID as integer,",
+				"          CUST_NAME as string,",
+				"          AGE as integer,",
+				"          GENDER as string,",
+				"          CITY as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> CUSTOMER",
+				"source(output(",
+				"          CUST_ID as integer,",
+				"          ACCOUNT_NUMBER as string,",
+				"          ACCOUNT_TYPE as string,",
+				"          ACCOUNT_OPEN_DATE as string,",
+				"          ACCOUNT_CLOSE_DATE as string,",
+				"          DORMANCY_STATUS as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> ACCOUNT",
+				"CUSTOMER, ACCOUNT lookup(CUSTOMER@CUST_ID == ACCOUNT@CUST_ID,",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> lookup1"
+			]
+		}
+	}
+}
